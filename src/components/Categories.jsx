@@ -1,4 +1,5 @@
-import { CATEGORIES } from "../products";
+import { useState, useEffect } from "react";
+import { api } from "../lib/api";
 import remeras from "../assets/photos/cat-remeras.jpg";
 import vestidos from "../assets/photos/cat-vestidos.jpg";
 import conjuntos from "../assets/photos/cat-conjuntos.jpg";
@@ -6,16 +7,15 @@ import pantalones from "../assets/photos/cat-pantalones.jpg";
 import tops from "../assets/photos/cat-tops.jpg";
 import accesorios from "../assets/photos/cat-accesorios.jpg";
 
-const CATEGORY_IMAGES = {
-  remeras,
-  vestidos,
-  conjuntos,
-  pantalones,
-  tops,
-  accesorios,
-};
+const CATEGORY_IMAGES = { remeras, vestidos, conjuntos, pantalones, tops, accesorios };
 
 export default function Categories({ onSelect }) {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    api.categories().then(setCategories).catch(() => {});
+  }, []);
+
   return (
     <section className="categories" aria-label="Categorías">
       <div className="container">
@@ -25,19 +25,19 @@ export default function Categories({ onSelect }) {
         </div>
 
         <div className="categories-grid">
-          {CATEGORIES.map((c, i) => (
+          {categories.map((c, i) => (
             <button
               key={c.id}
               className="category-card"
-              onClick={() => onSelect(c.id)}
+              onClick={() => onSelect(c.slug)}
               style={{ "--seed": i }}
             >
               <img
-                src={CATEGORY_IMAGES[c.id] || `https://picsum.photos/seed/cat-${c.id}/400/500`}
-                alt={c.label}
+                src={c.image_url || CATEGORY_IMAGES[c.slug] || `https://picsum.photos/seed/cat-${c.slug}/400/500`}
+                alt={c.name}
                 loading="lazy"
               />
-              <span>{c.label}</span>
+              <span>{c.name}</span>
             </button>
           ))}
         </div>

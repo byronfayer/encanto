@@ -136,8 +136,12 @@ function ProductsTab() {
 
   const remove = async (id) => {
     if (!confirm("¿Eliminar este producto?")) return;
-    await api.deleteProduct(id);
-    load();
+    try {
+      await api.deleteProduct(id);
+      load();
+    } catch (err) {
+      alert("Error al eliminar: " + err.message);
+    }
   };
 
   const saved = () => { setShowForm(false); setEditing(null); load(); };
@@ -213,8 +217,12 @@ function CategoriesTab() {
 
   const remove = async (id) => {
     if (!confirm("¿Eliminar esta categoría?")) return;
-    await api.deleteCategory(id);
-    load();
+    try {
+      await api.deleteCategory(id);
+      load();
+    } catch (err) {
+      alert("Error al eliminar: " + err.message);
+    }
   };
 
   if (loading) return <p className="adm-loading">Cargando...</p>;

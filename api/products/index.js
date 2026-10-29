@@ -7,6 +7,17 @@ const COLS = `p.id, p.name, p.slug, p.description, p.price, p.category_id,
   p.image_url, p.sizes, p.colors, p.status, p.active, p.featured, p.created_at`
 
 export default async function handler(req, res) {
+  const { id, slug } = req.query
+
+  if (req.method === 'GET' && slug) {
+    const { rows: [product] } = await query(
+      `SELECT ${COLS} FROM products p LEFT JOIN categories c ON c.id = p.category_id
+       WHERE p.slug = $1 AND p.active = true`, [slug]
+    )
+    if (!product) return res.status(404).json({ error: 'Producto no encontrado' })
+    return res.json(product)
+  }
+
   if (req.method === 'GET') {
     const { category, q: search, featured, sort, limit: lim } = req.query
     const where = ['p.active = true']
@@ -39,7 +50,7 @@ export default async function handler(req, res) {
     const price = Number(b.price)
     if (!(price >= 0)) return res.status(400).json({ error: 'Precio inválido' })
 
-    const slug = await uniqueSlug(name, 'products')
+    const s = await uniqueSlug(name, 'products')
     const desc = b.description ? String(b.description).trim() : null
     const cat_id = b.category_id ? Number(b.category_id) : null
     const img = b.image_url ? String(b.image_url).trim() : null
@@ -52,7 +63,7 @@ export default async function handler(req, res) {
     const { rows: [p] } = await query(
       `INSERT INTO products (name, slug, description, price, category_id, image_url, sizes, colors, status, active, featured)
        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) RETURNING id`,
-      [name, slug, desc, price, cat_id, img, sizes, colors, status, active, feat]
+      [name, s, desc, price, cat_id, img, sizes, colors, status, active, feat]
     )
 
     const { rows: [full] } = await query(
@@ -60,6 +71,44 @@ export default async function handler(req, res) {
       [p.id]
     )
     return res.status(201).json(full)
+  }
+
+  const admin = requireAdmin(req, res)
+  if (!admin) return
+  const pid = Number(id)
+  if (!pid) return res.status(400).json({ error: 'Falta ?id=' })
+
+  if (req.method === 'PUT') {
+    const { rows: [cur] } = await query('SELECT * FROM products WHERE id = $1', [pid])
+    if (!cur) return res.status(404).json({ error: 'No existe' })
+    const b = req.body || {}
+    const name = b.name != null ? String(b.name).trim() : cur.name
+    const desc = b.description != null ? (String(b.description).trim() || null) : cur.description
+    const price = b.price != null && b.price !== '' ? Number(b.price) : cur.price
+    const cat_id = b.category_id !== undefined ? (b.category_id ? Number(b.category_id) : null) : cur.category_id
+    const img = b.image_url != null ? (String(b.image_url).trim() || null) : cur.image_url
+    const sizes = b.sizes != null ? String(b.sizes).trim() : cur.sizes
+    const colors = b.colors != null ? String(b.colors).trim() : cur.colors
+    const status = b.status != null ? String(b.status) : cur.status
+    const active = b.active != null ? Boolean(b.active) : cur.active
+    const feat = b.featured != null ? Boolean(b.featured) : cur.featured
+
+    await query(
+      `UPDATE products SET name=$1, description=$2, price=$3, category_id=$4,
+       image_url=$5, sizes=$6, colors=$7, status=$8, active=$9, featured=$10, updated_at=NOW()
+       WHERE id=$11`,
+      [name, desc, price, cat_id, img, sizes, colors, status, active, feat, pid]
+    )
+
+    const { rows: [full] } = await query(
+      `SELECT ${COLS} FROM products p LEFT JOIN categories c ON c.id = p.category_id WHERE p.id = $1`, [pid]
+    )
+    return res.json(full)
+  }
+
+  if (req.method === 'DELETE') {
+    await query('DELETE FROM products WHERE id = $1', [pid])
+    return res.json({ ok: true })
   }
 
   res.status(405).json({ error: 'Method not allowed' })

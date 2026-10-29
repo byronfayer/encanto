@@ -4,9 +4,9 @@ import { waLink } from "../site.config";
 
 const PRICE_RANGES = [
   { id: "all", label: "Todos los precios" },
-  { id: "0-20000", label: "Hasta $20.000" },
-  { id: "20000-40000", label: "$20.000 – $40.000" },
-  { id: "40000-99999999", label: "Más de $40.000" },
+  { id: "0-15000", label: "Hasta $15.000" },
+  { id: "15000-18000", label: "$15.000 – $18.000" },
+  { id: "18000-99999999", label: "Más de $18.000" },
 ];
 
 const currency = (n) =>

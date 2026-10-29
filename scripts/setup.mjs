@@ -84,8 +84,8 @@ const defaults = [
   ['brand_name', 'Encanto'],
   ['tagline', 'Indumentaria'],
   ['whatsapp', '5493511234567'],
-  ['instagram', '@encanto.indumentaria'],
-  ['instagram_url', 'https://instagram.com/encanto.indumentaria'],
+  ['instagram', '@eencantoc_'],
+  ['instagram_url', 'https://www.instagram.com/eencantoc_/'],
   ['location', 'Córdoba Capital, Argentina'],
   ['hours', 'Lunes a sábados, 10 a 20 hs'],
 ]
@@ -96,11 +96,11 @@ console.log('✓ Settings')
 
 /* ---------- Categorías ---------- */
 const cats = [
-  ['Remeras', 'remeras', 1],
-  ['Tops', 'tops', 2],
-  ['Pantalones', 'pantalones', 3],
-  ['Vestidos', 'vestidos', 4],
-  ['Conjuntos', 'conjuntos', 5],
+  ['Conjuntos', 'conjuntos', 1],
+  ['Vestidos', 'vestidos', 2],
+  ['Casuits', 'casuits', 3],
+  ['Tops', 'tops', 4],
+  ['Enteritos', 'enteritos', 5],
   ['Accesorios', 'accesorios', 6],
 ]
 for (const [name, slug, order] of cats) {
@@ -108,7 +108,7 @@ for (const [name, slug, order] of cats) {
 }
 console.log('✓ Categorías')
 
-/* ---------- Productos de ejemplo ---------- */
+/* ---------- Productos ---------- */
 const { rows: [anyProd] } = await q('SELECT 1 FROM products LIMIT 1')
 if (!anyProd) {
   async function catId(slug) {
@@ -116,30 +116,30 @@ if (!anyProd) {
     return r?.id || null
   }
   const prods = [
-    ['Vestido Julieta', 'vestidos', 42000, 'Vestido elegante con caída suave, ideal para eventos.', 'S,M,L', 'Bordó,Negro', 'disponible', true],
-    ['Conjunto Bruma', 'conjuntos', 38500, 'Conjunto de dos piezas, versátil y femenino.', 'S,M', 'Rosa palo,Crudo', 'disponible', true],
-    ['Remera Oversize Luna', 'remeras', 15900, 'Remera oversize de algodón premium.', 'S,M,L,XL', 'Blanco,Negro,Bordó', 'disponible', true],
-    ['Jean Recto Alta Cintura', 'pantalones', 33900, 'Jean de corte recto con cintura alta.', '36,38,40,42', 'Azul claro,Azul oscuro', 'agotado', false],
-    ['Top Cruzado Ámbar', 'tops', 17200, 'Top cruzado con detalle en la espalda.', 'S,M,L', 'Rosa,Blanco', 'disponible', true],
-    ['Pantalón Palazzo Seda', 'pantalones', 29800, 'Palazzo de seda con caída fluida.', 'S,M,L', 'Bordó,Beige', 'disponible', false],
-    ['Tapado Paño Aurora', 'conjuntos', 58900, 'Tapado de paño abrigado y elegante.', 'S,M,L', 'Camel,Negro', 'disponible', true],
-    ['Vestido Amapola', 'vestidos', 45500, 'Vestido rojo con vuelo y escote en V.', 'S,M,L', 'Rojo', 'agotado', false],
-    ['Cinturón Charol Fino', 'accesorios', 9800, 'Cinturón de charol con hebilla dorada.', 'Único', 'Bordó,Negro', 'disponible', false],
-    ['Conjunto Blazer + Short', 'conjuntos', 47200, 'Conjunto ejecutivo de blazer y short.', 'S,M,L', 'Rosa viejo', 'disponible', true],
-    ['Remera Básica Encanto', 'remeras', 13500, 'Remera básica de algodón con logo bordado.', 'S,M,L,XL', 'Blanco,Rosa claro', 'disponible', false],
-    ['Jean Mom Fit', 'pantalones', 35900, 'Jean mom fit de tiro alto, cómodo y moderno.', '36,38,40', 'Azul medio', 'disponible', false],
+    ['Conjunto Rojo Satinado', 'conjuntos', 18000, 'Conjunto de top y short en satén rojo con detalle de argolla.', 'S,M,L', 'Rojo', 'disponible', true],
+    ['Vestido Escote V Bordó', 'vestidos', 20000, 'Vestido con escote en V y falda con vuelo, tela satinada.', 'S,M,L', 'Bordó', 'disponible', true],
+    ['Casuit de Encaje Blanco', 'casuits', 17000, 'Casuit con cuerpo de encaje y escote halter, elegante y femenino.', 'S,M,L', 'Blanco', 'disponible', true],
+    ['Casuit Rojo Intenso', 'casuits', 15000, 'Casuit entero en rojo satinado, ideal para la noche.', 'S,M,L', 'Rojo', 'disponible', true],
+    ['Conjunto Satinado Bordó', 'conjuntos', 15000, 'Conjunto de dos piezas en tela satinada con caída suave.', 'S,M,L', 'Bordó,Rojo', 'disponible', false],
+    ['Casuit Una Manga', 'casuits', 15000, 'Casuit asimétrico de una sola manga, moderno y audaz.', 'S,M', 'Negro,Rojo', 'disponible', true],
+    ['Casuit Brillos Escote V', 'casuits', 17000, 'Casuit con brillos y escote en V profundo.', 'S,M,L', 'Blanco,Negro,Bordó', 'agotado', false],
+    ['Conjunto Playero', 'conjuntos', 13000, 'Conjunto fresco y cómodo para el día, ideal para verano.', 'S,M,L', 'Varios', 'disponible', false],
+    ['Vestido Negro Clásico', 'vestidos', 16000, 'Vestido negro elegante, perfecto para cualquier ocasión.', 'S,M,L', 'Negro', 'disponible', true],
+    ['Conjunto Playero Bicolor', 'conjuntos', 14000, 'Conjunto playero en combinación de dos tonos.', 'S,M,L', 'Negro,Blanco,Marrón', 'agotado', false],
+    ['Conjunto Animal Print', 'conjuntos', 18000, 'Conjunto con estampado animal print, fresco y llamativo.', 'S,M,L', 'Animal print', 'disponible', true],
+    ['Vestido Tricolor', 'vestidos', 15000, 'Vestido disponible en tres colores, tela suave con caída.', 'S,M,L', 'Marrón,Beige,Negro', 'disponible', false],
   ]
   let seed = 1
   for (const [name, catSlug, price, desc, sizes, colors, status, featured] of prods) {
     const cid = await catId(catSlug)
-    const slug = name.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-')
-    const img = `https://picsum.photos/seed/encanto${seed++}/600/750`
+    const slug = name.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '')
+    const img = `https://picsum.photos/seed/enc${seed++}/600/750`
     await q(
       'INSERT INTO products (name, slug, description, price, category_id, image_url, sizes, colors, status, active, featured) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,true,$10)',
       [name, slug, desc, price, cid, img, sizes, colors, status, featured]
     )
   }
-  console.log('✓ Productos de ejemplo')
+  console.log('✓ Productos creados')
 } else {
   console.log('· Productos ya existen, no se tocaron')
 }

@@ -285,7 +285,7 @@ function SettingsTab() {
       <label>Nombre de marca <input value={form.brand_name} onChange={(e) => set("brand_name", e.target.value)} /></label>
       <label>Tagline <input value={form.tagline} onChange={(e) => set("tagline", e.target.value)} /></label>
       <label>WhatsApp (con código de país) <input value={form.whatsapp} onChange={(e) => set("whatsapp", e.target.value)} placeholder="5493511234567" /></label>
-      <label>Instagram handle <input value={form.instagram} onChange={(e) => set("instagram", e.target.value)} placeholder="@encanto.indumentaria" /></label>
+      <label>Instagram handle <input value={form.instagram} onChange={(e) => set("instagram", e.target.value)} placeholder="@eencantoc_" /></label>
       <label>Instagram URL <input value={form.instagram_url} onChange={(e) => set("instagram_url", e.target.value)} /></label>
       <label>Ubicación <input value={form.location} onChange={(e) => set("location", e.target.value)} /></label>
       <label>Horarios <input value={form.hours} onChange={(e) => set("hours", e.target.value)} /></label>

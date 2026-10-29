@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { api } from "../lib/api";
-import remeras from "../assets/photos/cat-remeras.jpg";
 import vestidos from "../assets/photos/cat-vestidos.jpg";
 import conjuntos from "../assets/photos/cat-conjuntos.jpg";
-import pantalones from "../assets/photos/cat-pantalones.jpg";
 import tops from "../assets/photos/cat-tops.jpg";
 import accesorios from "../assets/photos/cat-accesorios.jpg";
+import catRemeras from "../assets/photos/cat-remeras.jpg";
+import catPantalones from "../assets/photos/cat-pantalones.jpg";
 
-const CATEGORY_IMAGES = { remeras, vestidos, conjuntos, pantalones, tops, accesorios };
+const CATEGORY_IMAGES = { vestidos, conjuntos, tops, accesorios, casuits: catRemeras, enteritos: catPantalones };
 
 export default function Categories({ onSelect }) {
   const [categories, setCategories] = useState([]);
